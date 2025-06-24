@@ -1,0 +1,30 @@
+<!-- Start Comments Section -->
+<div class="comments">
+    {% for comment in comments%}
+    <div class="top">
+        <div class="userDetails">
+            <div class="comment-data">
+                <div class="profilepic">
+                    <div class="profile_img">
+                        <div class="image">
+                            <!-- User Profile Image -->
+                            <img src="/static/images/person.png" alt="img8">
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    <!-- Link to User Profile Details Page-->
+                    <!-- User First and/or Last Name or username-->
+                    <a href="">Steven Ivanov</a>
+                    <!-- User Comment -->
+                    - {{ comment.text|capfirst }}
+                </p>
+            </div>
+            <span>{{ comment.publication_date|date:'M. d, Y, H:m' }}Sept. 20, 2022, 5:02 p.m.</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<!-- End Comments Section -->
+
+<!-- Start Add Comments Section -->
