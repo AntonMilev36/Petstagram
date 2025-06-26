@@ -20,7 +20,8 @@ urlpatterns = [
                 'share/',
                 views.share,
                 name='share'
-            )
+            ),
+            path('comment/', views.comment, name='add-comment')
         ])
     )
 ]

@@ -12,16 +12,9 @@ urlpatterns = [
         '<int:pk>',
         include(
             [
-                path(
-                    '',
-                    views.details,
-                    name='photo_details'
-                ),
-                path(
-                    'edit/',
-                    views.edit,
-                    name='edit_photo'
-                )
+                path('', views.details, name='photo_details'),
+                path('edit/', views.edit, name='edit_photo'),
+                path('delte/', views.delete, name='delete_photo')
             ]
         )
     ),

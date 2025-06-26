@@ -9,6 +9,7 @@ from photos.validators import validate_field_size
 class Photo(models.Model):
 
     photo = models.ImageField(
+        upload_to='files',
         validators=[
             validate_field_size
         ]
@@ -34,3 +35,8 @@ class Photo(models.Model):
     publication_date = models.DateField(
         auto_now=True
     )
+
+    def __str__(self):
+        return ', '.join(
+            p.name for p in self.tagged_pet.all()
+        )

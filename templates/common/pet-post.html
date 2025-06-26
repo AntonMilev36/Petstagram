@@ -79,6 +79,23 @@
 
                     <h5 class="postTime">{{ photo.publication_date }}</h5>
 
+                    {% if editable %}
+                    <div class="edit-delete-btns">
+
+                        <!-- Link to Edit Pet Photo Page -->
+                        <a href="{% url 'edit_photo' pk=photo.pk %}">
+                            <img class="edit-img" src="{% static '/images/edit-pen-icon-6.jpg' %}"
+                                 alt="edit button">
+                        </a>
+
+                        <!-- Link to Delete Pet Photo Page -->
+                        <a href="{% url 'delete_photo' pk=photo.pk %}">
+                            <img class="bin-img" src="{% static '/images/icon-remove-22.jpg' %}"
+                                 alt="bin button">
+                        </a>
+                    </div>
+                {% endif %}
+
                     <!-- add comments section -->
                     {% if editable %}
                         <div class="addComments">
@@ -89,11 +106,10 @@
 
                         <div class="addComments">
                             <!-- Start Add Comments Form -->
-                            <form method="post" action="#">
-                                <label for="id_body">Body:</label>
-                                <textarea name="body" cols="40" rows="10" placeholder="Add comment..." maxlength="300"
-                                          required="" id="id_body"></textarea>
-                                                <!-- Post Comments Button -->
+                            <form method="post" action="{% url 'add-comment' photo_pk=photo.pk %}">
+                                {% csrf_token %}
+                                {{ comment_form }}
+                                <!-- Post Comments Button -->
                                 <button type="submit">Post</button>
                             </form>
                         </div>
