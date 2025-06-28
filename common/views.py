@@ -1,5 +1,7 @@
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect, resolve_url
+from django.shortcuts import redirect, resolve_url
+from django.views.generic import ListView
 
 from common.form import CommentForm, SearchFild
 from common.models import Like
@@ -9,28 +11,29 @@ from pyperclip import copy
 
 
 # Create your views here.
-def home(request: HttpRequest) -> HttpResponse:
-    comment_form = CommentForm()
-    search = SearchFild(request.GET or None)
+class HomeView(ListView):
+    model = Photo
+    template_name = 'common/home-page.html'
+    context_object_name = 'all_photos'
 
-    if search.is_valid():
-        all_photos = Photo.objects.filter(
-            tagged_pet__name__icontains=search.cleaned_data['pet_name']
-        )
-    else:
-        all_photos = Photo.objects.all()
+    def get_context_data(self, *, object_list: list=None, **kwargs):
+        kwargs.update({
+            'comment_form': CommentForm(),
+            'search': SearchFild()
+        })
+        return super().get_context_data(object_list=object_list, **kwargs)
 
-    context = {
-        'all_photos': all_photos,
-        'comment_form': comment_form,
-        'search': search
-    }
+    def get_queryset(self) -> QuerySet:
+        queryset = super().get_queryset()
+        pet_name = self.request.GET.get('pet_name')
 
-    return render(
-        request,
-        template_name='common/home-page.html',
-        context=context
-    )
+        if pet_name:
+            queryset = queryset.filter(
+                tagged_pet__name__icontains=pet_name
+            )
+
+        return queryset
+
 
 def like(request: HttpRequest, photo_pk: int) -> HttpResponse:
     like_obj = Like.objects.filter(

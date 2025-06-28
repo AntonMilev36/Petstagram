@@ -1,11 +1,12 @@
 from django.urls import path, include
 
 from common import views
+from common.views import HomeView
 
 urlpatterns = [
     path(
         '',
-        views.home,
+        HomeView.as_view(),
         name='home_page'
     ),
     path(
