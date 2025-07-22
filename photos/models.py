@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator
 from django.db import models
 
@@ -6,6 +7,9 @@ from photos.validators import validate_field_size
 
 
 # Create your models here.
+
+UserModel = get_user_model()
+
 class Photo(models.Model):
 
     photo = models.ImageField(
@@ -34,6 +38,12 @@ class Photo(models.Model):
 
     publication_date = models.DateField(
         auto_now=True
+    )
+
+    user = models.ForeignKey(
+        to=UserModel,
+        on_delete=models.CASCADE,
+        blank=True
     )
 
     def __str__(self):

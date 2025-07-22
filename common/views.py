@@ -37,14 +37,16 @@ class HomeView(ListView):
 
 def like(request: HttpRequest, photo_pk: int) -> HttpResponse:
     like_obj = Like.objects.filter(
-        to_photo_id=photo_pk
+        to_photo_id=photo_pk,
+        user=request.user
     ).first()
 
     if like_obj:
         like_obj.delete()
     else:
         Like.objects.create(
-            to_photo_id=photo_pk
+            to_photo_id=photo_pk,
+            user=request.user
         )
 
     return redirect(request.META['HTTP_REFERER'] + f'#{photo_pk}')
@@ -64,8 +66,7 @@ def comment(request: HttpRequest, photo_pk: int) -> HttpResponse:
     if request.method == 'POST' and form.is_valid():
         comments = form.save(commit=False)
         comments.to_photo = photo
+        comments.user = request.user
         comments.save()
-
-
 
     return redirect(request.META['HTTP_REFERER'] + f'#{photo_pk}')

@@ -6,7 +6,7 @@ from pets.models import Pet
 class PetBaseForm(forms.ModelForm):
     class Meta:
         model = Pet
-        exclude = ['slug']
+        exclude = ['slug', 'user']
 
         labels = {
             'name': 'Pet Name',

@@ -28,7 +28,8 @@ class Pet(models.Model):
 
     user = models.ForeignKey(
         to=UserModel,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        blank=True
     )
 
     def save(self, *args, **kwargs):

@@ -17,6 +17,13 @@ class PhotoAddView(CreateView):
     template_name = 'photos/photo-add-page.html'
     success_url = reverse_lazy('home_page')
 
+    def form_valid(self, form: PhotoCreateForm) -> HttpResponse:
+        photo = form.save(commit=False)
+        photo.user = self.request.user
+        photo.save()
+        return super().form_valid(form)
+
+
 
 class PhotoDetailView(DetailView):
     model = Photo

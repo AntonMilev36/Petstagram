@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DetailView
 from accounts.models import Profile
 
 from accounts.forms import AppUserCreateForm, ProfileEditForm
@@ -21,11 +22,22 @@ class UserRegisterView(CreateView):
         return response
 
 
-def details(request, pk:int):
-    return render(
-        request,
-        'accounts/profile-details-page.html'
-    )
+# def details(request, pk:int):
+#     return render(
+#         request,
+#         'accounts/profile-details-page.html'
+#     )
+
+class ProfileDetailsView(DetailView):
+    model = Profile
+    template_name =  'accounts/profile-details-page.html'
+    context_object_name = 'profile'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['likes_count'] = self.object.user.like_set.count()
+
+        return context
 
 
 class ProfileEditView(UpdateView):

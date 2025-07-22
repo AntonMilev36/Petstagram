@@ -57,3 +57,7 @@ class Profile(models.Model):
         null=True,
         blank=True
     )
+
+    @property
+    def full_name (self):
+        return  f'{self.first_name or ''} {self.last_name or ''}'
